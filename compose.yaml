@@ -1,0 +1,55 @@
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${WP_DB_PASSWORD:?Ejecuta bash scripts/init-env.sh}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Ejecuta bash scripts/init-env.sh}
+      MARIADB_ROOT_HOST: localhost
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    build:
+      context: .
+      args:
+        DEV_UID: ${DEV_UID:-1000}
+        DEV_GID: ${DEV_GID:-1000}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD:?Ejecuta bash scripts/init-env.sh}
+      WORDPRESS_DEBUG: "1"
+      WORDPRESS_CONFIG_EXTRA: "require '/opt/wordpress-dev/config.php';"
+      WP_LOCAL_URL: ${WP_LOCAL_URL:-http://localhost:8080}
+      CODESPACE_NAME: ${CODESPACE_NAME:-}
+      GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN: ${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-}
+    volumes:
+      - wp-data:/var/www/html
+      - ./wp-content:/var/www/html/wp-content
+      - ./scripts:/opt/bitforma/scripts:ro
+      - ./docker/wordpress-config.php:/opt/wordpress-dev/config.php:ro
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://127.0.0.1/wp-login.php"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  db-data:
+  wp-data:

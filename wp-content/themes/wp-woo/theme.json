@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/wp/7.1/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {"contentSize": "800px", "wideSize": "1320px"},
+    "color": {
+      "defaultPalette": false,
+      "palette": [
+        {"slug": "paper", "color": "#f9f8f4", "name": "Papel"},
+        {"slug": "ink", "color": "#1b1927", "name": "Tinta"},
+        {"slug": "lavender", "color": "#e8dcfa", "name": "Lavanda"},
+        {"slug": "lime", "color": "#e6f89e", "name": "Lima"},
+        {"slug": "white", "color": "#fff", "name": "Blanco"}
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {"slug": "bitforma", "name": "Inter", "fontFamily": "Inter, system-ui, sans-serif",
+         "fontFace": [{"fontFamily": "Inter", "fontStyle": "normal", "fontWeight": "100 900", "src": ["file:./assets/inter.woff2"]}]}
+      ]
+    }
+  },
+  "styles": {
+    "color": {"background": "var:preset|color|paper", "text": "var:preset|color|ink"},
+    "spacing": {"blockGap": "1.25rem", "padding": {"left": "0", "right": "0", "top": "0", "bottom": "0"}},
+    "typography": {"fontFamily": "var:preset|font-family|bitforma", "lineHeight": "1.55", "fontSize": "1rem"},
+    "elements": {
+      "heading": {"typography": {"letterSpacing": "-0.045em", "lineHeight": "1.08", "fontWeight": "700"}},
+      "link": {"color": {"text": "var:preset|color|ink"}},
+      "button": {
+        "color": {"background": "var:preset|color|ink", "text": "var:preset|color|white"},
+        "border": {"radius": "8px"},
+        "typography": {"fontWeight": "650", "fontSize": "0.92rem"},
+        "spacing": {"padding": {"top": "0.85rem", "right": "1.3rem", "bottom": "0.85rem", "left": "1.3rem"}}
+      }
+    }
+  }
+}

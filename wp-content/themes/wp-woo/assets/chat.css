@@ -1,0 +1,199 @@
+.bf-chat-widget {
+	--bf-chat-edge: max(1rem, env(safe-area-inset-right));
+	--bf-chat-bottom: calc(var(--bf-product-bar-height, env(safe-area-inset-bottom)) + 1rem);
+	--bf-chat-launcher-height: 3rem;
+	position: fixed;
+	z-index: 21;
+	right: var(--bf-chat-edge);
+	bottom: var(--bf-chat-bottom);
+	display: flex;
+	align-items: flex-end;
+	gap: .625rem;
+	pointer-events: none;
+}
+
+.bf-chat-launcher {
+	min-height: var(--bf-chat-launcher-height);
+	border: 0;
+	border-radius: 2rem;
+	box-shadow: 0 4px 16px rgb(27 25 39 / .2);
+	cursor: pointer;
+	pointer-events: auto;
+}
+
+.bf-chat-voice {
+	--bf-voice-size: 8rem;
+	position: relative;
+}
+
+.bf-chat-voice__button {
+	display: grid;
+	justify-items: center;
+	gap: .375rem;
+	padding: 0;
+	border: 0;
+	border-radius: 1.5rem;
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	font: inherit;
+	cursor: pointer;
+	pointer-events: auto;
+}
+
+.bf-chat-voice__orb {
+	box-sizing: border-box;
+	position: relative;
+	display: block;
+	width: var(--bf-voice-size);
+	aspect-ratio: 1;
+	overflow: hidden;
+	border: 1px solid #cbbce5;
+	border-radius: 50%;
+	background: radial-gradient(ellipse at 32% 22%, #fdfbff 8%, #f2ebfc 52%, #dbcaf3 100%);
+	box-shadow: inset 0 0 0 4px rgb(255 255 255 / .5), 0 5px 18px rgb(44 26 75 / .14);
+	transition: box-shadow 240ms ease;
+}
+
+.bf-chat-voice__orb::before {
+	position: absolute;
+	inset: 12%;
+	border: 1px solid rgb(116 88 166 / .13);
+	border-radius: 50%;
+	content: "";
+}
+
+.bf-chat-voice__orb canvas {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.bf-chat-voice__label {
+	display: grid;
+	min-height: var(--bf-chat-launcher-height);
+	min-width: 5.5rem;
+	box-sizing: border-box;
+	place-items: center;
+	padding-inline: .875rem;
+	border: 1px solid #cbbce5;
+	border-radius: 2rem;
+	background: #fcfaff;
+	font-size: .875rem;
+	font-weight: 650;
+	box-shadow: 0 4px 12px rgb(44 26 75 / .1);
+}
+
+.bf-chat-voice__button:hover .bf-chat-voice__label {
+	background: var(--wp--preset--color--lavender);
+}
+
+.bf-chat-voice.is-speaking .bf-chat-voice__orb {
+	box-shadow: inset 0 0 0 4px rgb(255 255 255 / .65), 0 5px 22px rgb(85 56 143 / .25);
+}
+
+.bf-chat-voice__bubble {
+	box-sizing: border-box;
+	position: absolute;
+	right: 0;
+	bottom: calc(100% + 1rem);
+	width: min(17rem, calc(100vw - var(--bf-chat-edge) - 6.5rem));
+	margin: 0;
+	padding: .875rem 1rem;
+	border: 1px solid #ac99cc;
+	border-radius: 1rem 1rem .875rem 1rem;
+	background: #fcfaff;
+	color: var(--wp--preset--color--ink);
+	box-shadow: 0 5px 18px rgb(44 26 75 / .12);
+	font-size: .9375rem;
+	line-height: 1.4;
+	overflow-wrap: break-word;
+	pointer-events: auto;
+}
+
+.bf-chat-voice__bubble::after {
+	position: absolute;
+	right: 3.5rem;
+	bottom: -.42rem;
+	width: .75rem;
+	height: .75rem;
+	border-right: inherit;
+	border-bottom: inherit;
+	background: inherit;
+	content: "";
+	transform: rotate(45deg);
+}
+
+.bf-chat-voice__bubble:empty {
+	clip-path: inset(50%);
+	pointer-events: none;
+}
+
+@media (max-height: 400px) {
+	.bf-chat-voice {
+		--bf-voice-size: 5.5rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bf-chat-voice__orb {
+		transition: none;
+	}
+}
+
+.bf-chat-panel[popover] {
+	box-sizing: border-box;
+	position: fixed;
+	inset: auto var(--bf-chat-edge) var(--bf-chat-bottom) auto;
+	width: min(26rem, calc(100% - var(--bf-chat-edge) - 1rem));
+	height: min(36rem, calc(100dvh - var(--bf-chat-bottom) - 1rem - var(--wp-admin--admin-bar--height, 0px)));
+	max-width: none;
+	max-height: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid var(--bf-line);
+	border-radius: 14px;
+	background: var(--wp--preset--color--white);
+	color: var(--wp--preset--color--ink);
+	box-shadow: 0 8px 32px rgb(27 25 39 / .2);
+	pointer-events: auto;
+}
+
+.bf-chat-panel:popover-open {
+	display: flex;
+	flex-direction: column;
+}
+
+.bf-chat-panel__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-inline: 1rem .35rem;
+	background: var(--wp--preset--color--lavender);
+}
+
+.bf-chat-panel__header h2 {
+	margin: 0;
+	font-size: 1rem;
+	letter-spacing: normal;
+}
+
+.bf-chat-panel__header button {
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.bf-chat-panel iframe {
+	flex: 1;
+	width: 100%;
+	min-height: 0;
+	border: 0;
+}
